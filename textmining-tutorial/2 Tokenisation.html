@@ -57,11 +57,9 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'Solutions/2 Tokenisation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'textmining-tutorial/2 Tokenisation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Word frequencies" href="3%20Word%20frequencies.html" />
-    <link rel="prev" title="1. Acquiring texts" href="1%20Acquiring%20texts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,6 +121,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -188,13 +188,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Solutions</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Tokenisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3%20Word%20frequencies.html">3. Word frequencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4%20Examining_context.html">4. Examining the context of words</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/4%20Examining_context.html">4. Examining the context of words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Solutions/6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
 </ul>
 
     </div>
@@ -266,7 +266,7 @@
       
       
       
-      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main/issues/new?title=Issue%20on%20page%20%2FSolutions/2 Tokenisation.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main/issues/new?title=Issue%20on%20page%20%2Ftextmining-tutorial/2 Tokenisation.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -296,7 +296,7 @@
       
       
       
-      <li><a href="../_sources/Solutions/2 Tokenisation.ipynb" target="_blank"
+      <li><a href="../_sources/textmining-tutorial/2 Tokenisation.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -390,9 +390,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-1">Exercise 2.1.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-2">Exercise 2.2.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-3">Exercise 2.3.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word-tokenisation">Word tokenisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-tokenisation">Sentence tokenisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-1">Exercise 2.1.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-2">Exercise 2.2.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-3">Exercise 2.3.</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -406,8 +411,125 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tokenisation">
 <h1>2. Tokenisation<a class="headerlink" href="#tokenisation" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Tokenisation is the process of dividing a text into smaller linguistic units, such as the words, the paragraph, or the sentences. It is a crucial pre-processing operation for many text analysis tasks.</p>
+<p>Word tokenisation generally takes place on the basis of the spaces that occur in between the words. The individual words that are found in a text are called “<strong>tokens</strong>”. When this full list is deduplicated, leaving only the unique words, the items in such lists are called “<strong>types</strong>”.</p>
+<p>This tutorial explains how you can tokenise a text using the <code class="docutils literal notranslate"><span class="pre">nltk</span></code> package, a toolkit that enables you you work with texts in natural languages.</p>
+<p>To make use of this package, you firstly need to import it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The methods that are discussed in this tutorial make use of a number of additional resources which are not installed by default. If you have never used <code class="docutils literal notranslate"><span class="pre">nltk</span></code> before, you need to run the code below to install these resources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ssl</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_create_unverified_https_context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">_create_unverified_context</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ssl</span><span class="o">.</span><span class="n">_create_default_https_context</span> <span class="o">=</span> <span class="n">_create_unverified_https_context</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;averaged_perceptron_tagger&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;tagsets&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;wordnet&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;sentiwordnet&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="word-tokenisation">
+<h2>Word tokenisation<a class="headerlink" href="#word-tokenisation" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ntlk.tokenize</span></code> module has a method named <code class="docutils literal notranslate"><span class="pre">word_tokenize()</span></code>. This methods demand a string as input. This may be a sentence or a whole paragraph. When it is run, the method returns a Python list containing all the individual words found in the string that is provided. As mentioned, the individual words are identified using the spaces found in this string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+
+<span class="n">quote</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">It was the best of times, </span>
+<span class="s1">it was the worst of times&#39;&#39;&#39;</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">quote</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When you look closely at the output of the code above, you can see that the <code class="docutils literal notranslate"><span class="pre">word_tokenize()</span></code> method treats punctuation marks as separate tokens. In the example above, the comma following the first occurrence of the word ‘times’ is actually a separate item in the list.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">remove_punctuation</span></code>, defined below, can be used to remove the tokens that consist of punctuation only. As input, the function demands a list of tokens. For each string in this list, the function tests whether it consists of alphanumeric characters, using the <code class="docutils literal notranslate"><span class="pre">isalnum()</span></code> method. The function returns those words which pass this test only.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">remove_punctuation</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">new_list</span><span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+            <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">w</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_list</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function can be used as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">remove_punctuation</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once you have created a list containing all the individual tokens, you can easily count the total number of token, using the <code class="docutils literal notranslate"><span class="pre">len()</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nr_tokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">words</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The text fragment contains </span><span class="si">{</span><span class="n">nr_tokens</span><span class="si">}</span><span class="s1"> tokens.&#39;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sentence-tokenisation">
+<h2>Sentence tokenisation<a class="headerlink" href="#sentence-tokenisation" title="Link to this heading">#</a></h2>
+<p>The method <code class="docutils literal notranslate"><span class="pre">sent_tokenize()</span></code> from the <code class="docutils literal notranslate"><span class="pre">nltk</span></code> package can be used to divide a text into its separate sentences. This type of tokenisation take place on the basis of full stops and upper case characters.</p>
+<p>The cell below contains an illustration of how the <code class="docutils literal notranslate"><span class="pre">sent_tokenize()</span></code> method can be used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
+
+<span class="c1">## First paragraph of &quot;A Farewell to Arms&quot;</span>
+<span class="n">quote</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;In the late summer of that year we lived in a house in a village </span>
+<span class="s1">that looked across the river and the plain to the mountains. In the bed of the </span>
+<span class="s1">river there were pebbles and boulders, dry and white in the sun, and the water</span>
+<span class="s1">was clear and swiftly moving and blue in the channels. Troops went by the house </span>
+<span class="s1">and down the road and the dust they raised powdered the leaves of the trees. The </span>
+<span class="s1">trunks of the trees too were dusty and the leaves fell early that year and </span>
+<span class="s1">we saw the troops marching along the road and the dust rising and leaves, stirred </span>
+<span class="s1">by the breeze, falling and the soldiers marching and afterward the road bare and </span>
+<span class="s1">white except for the leaves.&#39;&#39;&#39;</span>
+
+<span class="n">sentences</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">quote</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The fragment contains </span><span class="si">{</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span><span class="w"> </span><span class="si">}</span><span class="s1"> sentences.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
 <section id="exercise-2-1">
-<h2>Exercise 2.1.<a class="headerlink" href="#exercise-2-1" title="Link to this heading">#</a></h2>
+<h3>Exercise 2.1.<a class="headerlink" href="#exercise-2-1" title="Link to this heading">#</a></h3>
 <p>The ‘Corpus’ folder that you have downloaded as part of this tutorial contains the full text of ‘Pride and Prejudice’.
 Write code that can help you to answer the following questions about this text:</p>
 <ul class="simple">
@@ -423,38 +545,18 @@ Write code that can help you to answer the following questions about this text:<
 <span class="kn">from</span> <span class="nn">tdmh</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
 
-<span class="c1"># This code &#39;moves down&#39; in the folder system</span>
-<span class="c1"># because the folder &#39;Corpus&#39; is on the same level as &#39;Solutions&#39;</span>
-<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span> <span class="s1">&#39;PrideandPrejudice.txt&#39;</span><span class="p">)</span>
 
-<span class="c1"># if &#39;Corpus&#39; is in the same directory of this notebook, </span>
-<span class="c1"># you can use:</span>
-<span class="c1"># path = join( &#39;Corpus&#39; , &#39;PrideandPrejudice.txt&#39;)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span> <span class="s1">&#39;PrideandPrejudice.txt&#39;</span><span class="p">)</span>
 
 <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">path</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span> <span class="p">)</span>
 <span class="n">full_text</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">nr_char</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The novel contains </span><span class="si">{</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span><span class="w"> </span><span class="si">}</span><span class="s1"> characters. &#39;</span> <span class="p">)</span>
-
-<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
-<span class="n">words</span> <span class="o">=</span> <span class="n">remove_punctuation</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
-
-<span class="n">nr_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> 
-
-<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The novel contains </span><span class="si">{</span><span class="w"> </span><span class="n">nr_char</span><span class="w"> </span><span class="si">}</span><span class="s1"> characters. &#39;</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The word &quot;marriage&quot; occurs </span><span class="si">{</span><span class="w"> </span><span class="n">nr_words</span><span class="w"> </span><span class="si">}</span><span class="s1"> times.&#39;</span> <span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The words in the novel contain </span><span class="si">{</span><span class="w"> </span><span class="n">nr_char</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nr_words</span><span class="si">}</span><span class="s1"> characters on average. &#39;</span> <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="exercise-2-2">
-<h2>Exercise 2.2.<a class="headerlink" href="#exercise-2-2" title="Link to this heading">#</a></h2>
+<h3>Exercise 2.2.<a class="headerlink" href="#exercise-2-2" title="Link to this heading">#</a></h3>
 <p>Can you print the first five sentences of <em>Pride and Prejudice</em>?
 How many sentences does the novel contain in total?
 Building on the results of the previous exercise, can you calculate the average length of sentences? In other words, how many tokens do the sentences contain on average?</p>
@@ -462,65 +564,33 @@ Building on the results of the previous exercise, can you calculate the average 
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
 
-<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span> <span class="s1">&#39;PrideandPrejudice.txt&#39;</span><span class="p">)</span>
 
-
+<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span> <span class="s1">&#39;PrideandPrejudice.txt&#39;</span><span class="p">)</span>
 
 <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">path</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span> <span class="p">)</span>
 <span class="n">full_text</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
-<span class="n">words</span> <span class="o">=</span> <span class="n">remove_punctuation</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
-
-<span class="n">nr_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> 
-
-<span class="n">sentences</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
-<span class="n">nr_sentences</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">nr_words</span> <span class="p">,</span> <span class="n">nr_sentences</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The sentences in the novel contain </span><span class="si">{</span><span class="w"> </span><span class="nb">round</span><span class="p">(</span><span class="w"> </span><span class="n">nr_words</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nr_sentences</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="si">}</span><span class="s1"> words on average. &#39;</span> <span class="p">)</span>
-
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">First five sentences:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="n">nr_sentences</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;- </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="exercise-2-3">
-<h2>Exercise 2.3.<a class="headerlink" href="#exercise-2-3" title="Link to this heading">#</a></h2>
-<p>What is the longest word in the novel <em>Ulysses</em>?</p>
+<h3>Exercise 2.3.<a class="headerlink" href="#exercise-2-3" title="Link to this heading">#</a></h3>
+<p>What is the longest word in the novel <em>Ullyses</em>?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
-
-
-<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span><span class="s1">&#39;Ulysses.txt&#39;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;Ullyses.txt&#39;</span><span class="p">)</span>
 
 <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="n">full_text</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
-
-<span class="n">longest</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&gt;</span><span class="nb">len</span><span class="p">(</span><span class="n">longest</span><span class="p">):</span>
-        <span class="n">longest</span> <span class="o">=</span> <span class="n">word</span>
-        
-<span class="nb">print</span><span class="p">(</span><span class="n">longest</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 
@@ -537,7 +607,7 @@ Building on the results of the previous exercise, can you calculate the average 
         },
         kernelOptions: {
             name: "python3",
-            path: "./Solutions"
+            path: "./textmining-tutorial"
         },
         predefinedOutput: true
     }
@@ -554,24 +624,6 @@ Building on the results of the previous exercise, can you calculate the average 
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="1%20Acquiring%20texts.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">1. Acquiring texts</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="3%20Word%20frequencies.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3. Word frequencies</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -588,9 +640,14 @@ Building on the results of the previous exercise, can you calculate the average 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-1">Exercise 2.1.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-2">Exercise 2.2.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-3">Exercise 2.3.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word-tokenisation">Word tokenisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-tokenisation">Sentence tokenisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-1">Exercise 2.1.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-2">Exercise 2.2.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-3">Exercise 2.3.</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
