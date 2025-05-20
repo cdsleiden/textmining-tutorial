@@ -1,0 +1,1029 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. Sentiment analysis &#8212; Text Mining Tutorial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Solutions/6 Sentiment_analysis';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="5 Part of Speech Tagging and Lemmatisation" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../Welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Text Mining Tutorial - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Text Mining Tutorial - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../Welcome.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4%20Examining_context.html">4. Examining the context of words</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Solutions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4%20Examining_context.html">4. Examining the context of words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Sentiment analysis</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main/issues/new?title=Issue%20on%20page%20%2FSolutions/6 Sentiment_analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Solutions/6 Sentiment_analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6. Sentiment analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-1">Exercise 6.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-2">Exercise 6.2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-3">Exercise 6.3</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sentiment-analysis">
+<h1>6. Sentiment analysis<a class="headerlink" href="#sentiment-analysis" title="Link to this heading">#</a></h1>
+<section id="exercise-6-1">
+<h2>Exercise 6.1<a class="headerlink" href="#exercise-6-1" title="Link to this heading">#</a></h2>
+<p>Use the code below to download a file named ‘ulysses_reviews.txt’, available at <a class="reference external" href="https://edu.nl/fyf8v">edu.nl/fyf8v</a></p>
+<p>This file contains the full text of a number of reviews of James Joyce’s novel <em>Ulysses</em> which were posted on the <a class="reference external" href="https://www.goodreads.com/book/show/338798.Ulysses">goodReads</a> social reading platform.</p>
+<p>Can you select all the positive words from these reviews? Can you also select all the words with a negative connotation?
+Is the number of positive words higher than the number of than negative words?</p>
+<p>You can the steps below:</p>
+<ol class="arabic simple">
+<li><p>Create two lists, named <code class="docutils literal notranslate"><span class="pre">positive_words</span></code> and <code class="docutils literal notranslate"><span class="pre">negative_words</span></code>.</p></li>
+<li><p>Tokenise the text file, and calculate the score for positivity and the score for negativity for each of these words.</p></li>
+<li><p>If the posiitivity score is higher than 0.75, append the word to the list named <code class="docutils literal notranslate"><span class="pre">positive_words</span></code>. If the negativitiy score is higher than 0.75, append the word to <code class="docutils literal notranslate"><span class="pre">negative_words</span></code>.</p></li>
+<li><p>Finally, you can subtract the length of the list <code class="docutils literal notranslate"><span class="pre">negative_words</span></code> from the length of the list <code class="docutils literal notranslate"><span class="pre">positive_words</span></code></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://edu.nl/fyf8v&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="s1">&#39;ulysses_reviews.txt&#39;</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">vaderSentiment.vaderSentiment</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span> 
+<span class="c1">#from nltk.sentiment.vader import SentimentIntensityAnalyzer</span>
+
+<span class="n">ana</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+
+<span class="n">reviews</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="s1">&#39;ulysses_reviews.txt&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="n">positive_words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">negative_words</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reviews</span><span class="p">:</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">ana</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.75</span><span class="p">:</span>
+            <span class="n">positive_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;neg&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.75</span><span class="p">:</span>
+            <span class="n">negative_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        
+<span class="c1">#print( positive_words) </span>
+<span class="c1">#print( negative_words) </span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">positive_words</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">negative_words</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-6-2">
+<h2>Exercise 6.2<a class="headerlink" href="#exercise-6-2" title="Link to this heading">#</a></h2>
+<p>What is the most negative sentence in these reviews of <em>Ulysses</em>? What is the most positive sentence?</p>
+<p>Try to implement the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a dictionary named <code class="docutils literal notranslate"><span class="pre">sent_scores</span></code> which can save the scores. In this dictionary, you can use sentences as keys, and the compound scores as values.</p></li>
+<li><p>Navigate across all the lines in the file. Each line of the file is the full text of single review.</p></li>
+<li><p>Tokenisise the reviews into sentences.</p></li>
+<li><p>Navigate across all the sentences in these reviews and save the compound scores for these sentences in the dictionary <code class="docutils literal notranslate"><span class="pre">sent_scores</span></code>.</p></li>
+<li><p>Sort the dictionary named <code class="docutils literal notranslate"><span class="pre">sent_scores</span></code> in a descending order, and print the first few items it contain. The postive sentences will be shown at the top of the list. To see the negative sentence, you need to sort the dictionary in a descending order.</p></li>
+</ol>
+<p>Unfortunately, there is no standard function in Python that you can use to sort a dictionary by its values. This specific task can be performed using the function <code class="docutils literal notranslate"><span class="pre">sorted_by_value()</span></code>, defined below. This function can opionally be used with a parameter named <code class="docutils literal notranslate"><span class="pre">ascending</span></code>. If the value of this parameter is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the values will be sorted in a descending order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sorted_by_value</span><span class="p">(</span> <span class="nb">dict</span> <span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
+    <span class="k">if</span> <span class="n">ascending</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]))}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
+<span class="n">sent_scores</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="s1">&#39;Ulysses_reviews.txt&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">review</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">review</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">ana</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">sent_scores</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span>
+        
+<span class="n">nr_sentences</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Postive sentences</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sorted_by_value</span><span class="p">(</span> <span class="n">sent_scores</span> <span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="w"> </span><span class="n">sent_scores</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="si">}</span><span class="s1">]&#39;</span> <span class="p">)</span>
+    <span class="n">i</span><span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">nr_sentences</span><span class="p">:</span>
+        <span class="k">break</span>
+        
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Negative sentences</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sorted_by_value</span><span class="p">(</span> <span class="n">sent_scores</span> <span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="w"> </span><span class="n">sent_scores</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="si">}</span><span class="s1">]&#39;</span> <span class="p">)</span>
+    <span class="n">i</span><span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">nr_sentences</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-6-3">
+<h2>Exercise 6.3<a class="headerlink" href="#exercise-6-3" title="Link to this heading">#</a></h2>
+<p>Find the frequencies of all the negative words in <em>Brave New World</em>. A word can be considered negative if it has a compound score of -0.4 or lower. Sort the list by frequency.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="kn">from</span> <span class="nn">text_mining</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span> <span class="s1">&#39;Corpus&#39;</span> <span class="p">,</span> <span class="s1">&#39;BraveNewWorld.txt&#39;</span> <span class="p">)</span>
+
+<span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">full_text</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">remove_punctuation_and_stopwords</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> 
+<span class="n">freq</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span><span class="n">count</span> <span class="ow">in</span> <span class="n">freq</span><span class="o">.</span><span class="n">most_common</span><span class="p">():</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">ana</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;compound&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>savage (-0.4588)
+death (-0.5994)
+bad (-0.5423)
+lying (-0.5267)
+mad (-0.4939)
+broke (-0.4215)
+horrible (-0.5423)
+poor (-0.4767)
+crying (-0.4767)
+horror (-0.5719)
+pain (-0.5106)
+dead (-0.6486)
+kill (-0.6908)
+awful (-0.4588)
+ashamed (-0.4767)
+spite (-0.5267)
+hated (-0.6369)
+unpleasant (-0.4767)
+dangerous (-0.4767)
+worse (-0.4767)
+hurt (-0.5267)
+terror (-0.5267)
+terrible (-0.4767)
+sick (-0.5106)
+savages (-0.5267)
+beating (-0.4588)
+angry (-0.5106)
+war (-0.5994)
+cry (-0.4767)
+grief (-0.4939)
+died (-0.5574)
+stupid (-0.5267)
+crash (-0.4019)
+madness (-0.4404)
+miserable (-0.4939)
+suffer (-0.5423)
+die (-0.5994)
+fault (-0.4019)
+ill (-0.4215)
+unhappy (-0.4215)
+broken (-0.4767)
+tired (-0.4404)
+violent (-0.5994)
+distorted (-0.4019)
+trouble (-0.4019)
+hate (-0.5719)
+wrong (-0.4767)
+misery (-0.5719)
+horribly (-0.5267)
+danger (-0.5267)
+killed (-0.6705)
+poison (-0.5423)
+problem (-0.4019)
+discomfort (-0.4215)
+abandoned (-0.4588)
+furious (-0.5719)
+hopelessly (-0.4939)
+painful (-0.4404)
+fear (-0.4939)
+ignoring (-0.4019)
+emptiness (-0.4404)
+agony (-0.4215)
+rage (-0.5574)
+indignation (-0.5267)
+anger (-0.5719)
+disgust (-0.5994)
+fool (-0.4404)
+insane (-0.4019)
+hatred (-0.6369)
+contemptuous (-0.4939)
+pained (-0.4215)
+forced (-0.4588)
+frightened (-0.4404)
+nonsense (-0.4019)
+damn (-0.4019)
+angrily (-0.4215)
+enemies (-0.4939)
+haunted (-0.4767)
+uncomfortably (-0.4019)
+nasty (-0.5574)
+lose (-0.4019)
+threat (-0.5267)
+suffering (-0.4767)
+terribly (-0.5574)
+sad (-0.4767)
+violently (-0.5859)
+horrified (-0.5423)
+fury (-0.5719)
+harsh (-0.4404)
+fatal (-0.5423)
+unfair (-0.4767)
+gross (-0.4767)
+contempt (-0.5859)
+protesting (-0.4215)
+wicked (-0.5267)
+poverty (-0.5106)
+sin (-0.5574)
+ugly (-0.5106)
+indignant (-0.4215)
+glum (-0.4767)
+melancholy (-0.4404)
+distressing (-0.4019)
+bitterly (-0.4588)
+suffered (-0.4939)
+impatiently (-0.4019)
+distress (-0.5267)
+dreadful (-0.4404)
+agitated (-0.4588)
+agonized (-0.4939)
+threats (-0.4215)
+weakness (-0.4215)
+remorseless (-0.5106)
+hateful (-0.4939)
+sobbed (-0.4404)
+drowned (-0.5994)
+humiliation (-0.5719)
+terrified (-0.6124)
+exasperated (-0.4215)
+resentment (-0.4404)
+apprehension (-0.4767)
+miseries (-0.5719)
+threatened (-0.4588)
+violence (-0.6249)
+sadness (-0.4404)
+scared (-0.4404)
+losses (-0.4019)
+sadly (-0.4215)
+useless (-0.4215)
+starved (-0.5574)
+disappointed (-0.4767)
+wasting (-0.4019)
+furiously (-0.4404)
+discouraged (-0.4019)
+frightfully (-0.4019)
+forbidden (-0.4215)
+chaos (-0.5719)
+prison (-0.5106)
+suicide (-0.6705)
+obscene (-0.5859)
+disagreeable (-0.4019)
+pains (-0.4215)
+hopeless (-0.4588)
+defects (-0.4019)
+shocking (-0.4019)
+prejudices (-0.4215)
+prejudice (-0.5106)
+corpse (-0.5719)
+miserably (-0.4767)
+failure (-0.5106)
+appalled (-0.4588)
+betrayed (-0.6124)
+accident (-0.4767)
+guilty (-0.4215)
+shameful (-0.4939)
+impatience (-0.4215)
+sullen (-0.4019)
+harm (-0.5423)
+block (-0.4404)
+outrageous (-0.4588)
+panic (-0.5106)
+vain (-0.4215)
+despairingly (-0.4939)
+deprivation (-0.4215)
+stank (-0.4404)
+idiot (-0.5106)
+villain (-0.5574)
+stabbed (-0.4404)
+stab (-0.5859)
+illness (-0.4019)
+disgusting (-0.5267)
+steal (-0.4939)
+poisoned (-0.4939)
+scandalous (-0.5267)
+enemy (-0.5423)
+punishment (-0.4939)
+petrified (-0.5423)
+unworthy (-0.4588)
+hell (-0.6808)
+outrage (-0.5106)
+weep (-0.5719)
+grievance (-0.4767)
+outcry (-0.5106)
+dumb (-0.5106)
+troubles (-0.4588)
+pathetically (-0.4215)
+idiotic (-0.5574)
+excruciating (-0.6486)
+fears (-0.4215)
+irritation (-0.5106)
+whore (-0.6486)
+puking (-0.4215)
+stupidity (-0.4404)
+insults (-0.4215)
+fail (-0.5423)
+menace (-0.4939)
+degraded (-0.4215)
+wars (-0.5574)
+recession (-0.4215)
+evils (-0.5719)
+arrests (-0.4404)
+troublesome (-0.5106)
+wasted (-0.4939)
+failed (-0.5106)
+powerless (-0.4939)
+scream (-0.4019)
+crude (-0.5719)
+fooling (-0.4019)
+immoral (-0.4588)
+despised (-0.4019)
+despising (-0.5719)
+reeking (-0.4588)
+maniacally (-0.4019)
+agonizing (-0.5719)
+ugh (-0.4215)
+loathe (-0.4939)
+dangers (-0.4939)
+isolation (-0.4019)
+promiscuity (-0.4215)
+arrested (-0.4767)
+negative (-0.5719)
+degrading (-0.5859)
+rejected (-0.5106)
+collapse (-0.4939)
+destruction (-0.5719)
+dismal (-0.6124)
+destroyed (-0.4939)
+disgrace (-0.4939)
+crime (-0.5423)
+saddened (-0.5267)
+dirty (-0.4404)
+choked (-0.4767)
+downcast (-0.4215)
+guiltier (-0.4588)
+badly (-0.4767)
+despaired (-0.5719)
+arrogant (-0.4939)
+offensive (-0.4588)
+painfully (-0.5267)
+inadequacy (-0.4019)
+hostility (-0.5423)
+irritably (-0.4215)
+defective (-0.4404)
+failing (-0.5106)
+severely (-0.4588)
+haunt (-0.4019)
+unsatisfied (-0.4019)
+grim (-0.5719)
+devils (-0.5719)
+waste (-0.4215)
+temper (-0.4215)
+enslaved (-0.4019)
+oppressive (-0.4019)
+frightful (-0.5106)
+agonizingly (-0.5106)
+complained (-0.4019)
+incompetence (-0.5106)
+dejected (-0.4939)
+raged (-0.4588)
+savagery (-0.5423)
+destroying (-0.5574)
+condemnation (-0.5859)
+beaten (-0.4215)
+horrors (-0.5719)
+disliked (-0.4019)
+reeked (-0.4588)
+reek (-0.5267)
+cruel (-0.5859)
+frightening (-0.4939)
+stinking (-0.5267)
+hating (-0.5106)
+trapped (-0.5267)
+killing (-0.6597)
+unhappiness (-0.5267)
+pitiful (-0.4939)
+horrifying (-0.5719)
+thieveries (-0.4767)
+helplessness (-0.4767)
+hypocritical (-0.4588)
+murder (-0.6908)
+kills (-0.5423)
+terrifying (-0.5719)
+struggling (-0.4215)
+outraged (-0.5423)
+shamefully (-0.4404)
+greedily (-0.4404)
+snubs (-0.4767)
+distressed (-0.4215)
+sins (-0.4588)
+discord (-0.4019)
+assault (-0.5859)
+imprisoned (-0.4588)
+strangled (-0.5423)
+distraught (-0.5574)
+rude (-0.4588)
+offensively (-0.5859)
+refusing (-0.4019)
+injustice (-0.5719)
+perversely (-0.4939)
+revenges (-0.4404)
+punishments (-0.4215)
+resentful (-0.4767)
+revenge (-0.5267)
+shame (-0.4767)
+appall (-0.5267)
+dreadfully (-0.5719)
+bully (-0.4939)
+lies (-0.4215)
+anguish (-0.5994)
+stubborn (-0.4019)
+neglected (-0.5267)
+contemptuously (-0.5267)
+embarrassments (-0.4019)
+decays (-0.4019)
+worser (-0.4588)
+scare (-0.4939)
+hurting (-0.4019)
+aghast (-0.4404)
+stench (-0.5106)
+devil (-0.6597)
+imbecile (-0.4939)
+jealousies (-0.4588)
+uglinesses (-0.5423)
+fearful (-0.4939)
+disastrous (-0.5994)
+menaced (-0.4019)
+ugliness (-0.5719)
+annoying (-0.4019)
+dull (-0.4019)
+prisoners (-0.5106)
+tragedies (-0.4404)
+cruelty (-0.5994)
+regret (-0.4215)
+insecure (-0.4215)
+problems (-0.4019)
+terrors (-0.5574)
+troubled (-0.4588)
+fooleries (-0.4215)
+punishing (-0.5574)
+punished (-0.4588)
+degrade (-0.4404)
+dangerously (-0.4588)
+murdering (-0.6486)
+murdered (-0.6597)
+cancer (-0.6597)
+lousy (-0.5423)
+tortured (-0.5574)
+wickedness (-0.4767)
+blind (-0.4019)
+aching (-0.4939)
+starving (-0.4215)
+dismay (-0.4215)
+murderous (-0.6369)
+insulting (-0.4939)
+frantic (-0.4404)
+fools (-0.4939)
+cries (-0.4019)
+attacked (-0.4588)
+stampede (-0.4215)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Solutions"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5 Part of Speech Tagging and Lemmatisation</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-1">Exercise 6.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-2">Exercise 6.2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-3">Exercise 6.3</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Peter Verhaar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

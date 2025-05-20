@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Acquiring texts &#8212; Text Mining Tutorial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1 Acquiring texts';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Tokenisation" href="2%20Tokenisation.html" />
+    <link rel="prev" title="Welcome" href="Welcome.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="Welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Text Mining Tutorial - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Text Mining Tutorial - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="Welcome.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4%20Examining_context.html">4. Examining the context of words</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Solutions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Solutions/1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solutions/2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solutions/3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solutions/4%20Examining_context.html">4. Examining the context of words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solutions/5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solutions/6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main/issues/new?title=Issue%20on%20page%20%2F1 Acquiring texts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/1 Acquiring texts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Acquiring texts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquiring-the-texts-for-your-corpus">Acquiring the texts for your corpus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-a-text-from-project-gutenberg">Downloading a text from Project Gutenberg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-text-from-pdf-files">Extract text from PDF files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-1">Exercise 1.1</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="acquiring-texts">
+<h1>1. Acquiring texts<a class="headerlink" href="#acquiring-texts" title="Link to this heading">#</a></h1>
+<section id="acquiring-the-texts-for-your-corpus">
+<h2>Acquiring the texts for your corpus<a class="headerlink" href="#acquiring-the-texts-for-your-corpus" title="Link to this heading">#</a></h2>
+<p>Projects in field of Text Mining typically start with the preparation of a corpus. Machine-readable texts can be downloaded from a wide range of sources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gutenberg.org/">Project Gutenberg</a></p></li>
+<li><p><a class="reference external" href="https://ota.bodleian.ox.ac.uk/repository/xmlui/">Oxford Text Archive</a></p></li>
+<li><p><a class="reference external" href="https://www.dbnl.org/">Digital Library of the Netherlands</a></p></li>
+<li><p><a class="reference external" href="https://github.com/distantreading/distantreading.github.io">Distant Reading E-COST</a></p></li>
+<li><p><a class="reference external" href="https://dbnl.nl/">DBNL</a></p></li>
+<li><p><a class="reference external" href="https://github.com/textcreationpartnership/Texts">Text Creation Partnership</a></p></li>
+<li><p><a class="reference external" href="https://shakespeare.folger.edu/download/">Folger Shakespeare Digital Library</a></p></li>
+<li><p><a class="reference external" href="https://www.opensubtitles.com/en">Open Subtitles</a></p></li>
+<li><p><a class="reference external" href="https://textgridrep.org/">TextGrid Repository</a></p></li>
+<li><p><a class="reference external" href="https://archive.org/details/opensource">Internet Archive</a></p></li>
+<li><p><a class="reference external" href="https://openlibrary.org/">Open Library</a></p></li>
+<li><p><a class="reference external" href="https://www.delpher.nl/">Delpher</a></p></li>
+<li><p><a class="reference external" href="https://www.nrc.nl/index/archief/">Archive of NRC (Dutch Newspaper)</a></p></li>
+</ul>
+</section>
+<section id="downloading-a-text-from-project-gutenberg">
+<h2>Downloading a text from Project Gutenberg<a class="headerlink" href="#downloading-a-text-from-project-gutenberg" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="http://gutenberg.org">Project Gutenberg</a>, for example, is an online repository containing tens of thousands of machine readable texts in a variety of formats. The  plain TXT format , with characters encoded according to UTF-8 encoding, is usually the most convenient format.  If you know the URL of a specific TXT file on <em>Project Gutenberg</em>, you can access this text using the <code class="docutils literal notranslate"><span class="pre">requests</span></code> library.</p>
+<p>The code below downloads the file with the url <a class="reference external" href="https://www.gutenberg.org/files/4300/4300-0.txt">https://www.gutenberg.org/files/4300/4300-0.txt</a>. This file contains the full text of James Joyces’s novel <em>Ulysses</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">text_url</span> <span class="o">=</span> <span class="s1">&#39;https://www.gutenberg.org/files/4300/4300-0.txt&#39;</span>
+
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="n">text_url</span> <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
+    <span class="n">full_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you have managed to run this code successfully, the string named <code class="docutils literal notranslate"><span class="pre">full_text</span></code> should contain the full contents of the file that was downloaded.</p>
+<p>When you download text files from Project Gutenberg, it is important to bear in mind that the files all contain a ‘boilerplate’, before and after the actual full text. These headers and footers contain legal texts, and often some information about the digitisation process. The Gutenberg header and footer obviously needs to be removed from the file before you start to analyse the text.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">remove_pg_boilerplate()</span></code>, defined below, removes the boilerplate, based on the strings that are used at the end of the header (‘START OF THE PROJECT GUTENBURG EBOOK’) and at the beginning of the footer (‘END OF THE PROJECT GUTENBURG EBOOK’). The function selects all the text in between these two strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span> 
+
+<span class="k">def</span> <span class="nf">remove_pg_boilerplate</span><span class="p">(</span><span class="n">complete_file</span><span class="p">):</span>
+    
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span> <span class="sa">r</span><span class="s1">&#39;\n&#39;</span> <span class="p">,</span> <span class="n">complete_file</span> <span class="p">)</span>
+    <span class="n">read_mode</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="n">full_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="c1">#print(line)</span>
+        <span class="k">if</span> <span class="n">read_mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">full_text</span> <span class="o">+=</span> <span class="n">line</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span> <span class="sa">r</span><span class="s1">&#39;\*{3,}\s+START\s+OF\s+TH(E|IS)\s+PROJECT\s+GUTENBERG\s+EBOOK&#39;</span> <span class="p">,</span>  <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="p">):</span>
+            <span class="n">read_mode</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span> <span class="sa">r</span><span class="s1">&#39;\*{3,}\s+END\s+OF\s+TH(E|IS)\s+PROJECT\s+GUTENBERG\s+EBOOK&#39;</span> <span class="p">,</span>  <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="p">):</span>
+            <span class="n">read_mode</span> <span class="o">=</span> <span class="mi">0</span>
+            
+    <span class="n">full_text</span> <span class="o">=</span> <span class="n">full_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span> <span class="sa">r</span><span class="s1">&#39;^Produced by&#39;</span> <span class="p">,</span> <span class="n">full_text</span> <span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="p">):</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="n">full_text</span><span class="p">[</span> <span class="n">full_text</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">full_text</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the code below, the result of the <code class="docutils literal notranslate"><span class="pre">remove_pg_boilerplate()</span></code> function is asigned to a varibable named <code class="docutils literal notranslate"><span class="pre">cleaned_text</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cleaned_text</span> <span class="o">=</span> <span class="n">remove_pg_boilerplate</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>The text can be saved on your computer using the <code class="docutils literal notranslate"><span class="pre">open()</span></code> function in the write (’<code class="docutils literal notranslate"><span class="pre">w</span></code>’) mode.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="s1">&#39;ulysses.txt&#39;</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">cleaned_text</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code below defines a dictionary containing both the URLs and the titles of a number of books available at Project Gutenberg. The files that are listed in this dictionary can all be downloaded using the steps that have been discussed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">gutenberg_files</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s1">&#39;https://www.gutenberg.org/files/4300/4300-0.txt&#39;</span><span class="p">:</span><span class="s1">&#39;Ullyses&#39;</span><span class="p">,</span>
+<span class="s1">&#39;http://www.gutenberg.org/files/161/161-0.txt&#39;</span><span class="p">:</span><span class="s1">&#39;Sense and Sensibility&#39;</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">gutenberg_files</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading &quot;</span> <span class="o">+</span> <span class="n">gutenberg_files</span><span class="p">[</span><span class="n">url</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; ...&quot;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span> <span class="sa">r</span><span class="s1">&#39;\s+&#39;</span> <span class="p">,</span> <span class="s1">&#39;_&#39;</span> <span class="p">,</span>  <span class="n">gutenberg_files</span><span class="p">[</span><span class="n">url</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">.txt&#39;</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
+        <span class="n">full_text</span> <span class="o">=</span> <span class="n">remove_pg_boilerplate</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>           
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">title</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">full_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Done!&#39;</span><span class="p">)</span>    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading Ullyses ...
+Downloading Sense and Sensibility ...
+
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-text-from-pdf-files">
+<h2>Extract text from PDF files<a class="headerlink" href="#extract-text-from-pdf-files" title="Link to this heading">#</a></h2>
+<p>The notebooks written for this tutorial assume that texts are stored as TXT files with the characters encoded as UTF-8. If you have downloaded texts in other formats, you need to convert these text into TXT first.</p>
+<p>There are a number of packages that you can use to convert PDF files, into TXT. One of these is <code class="docutils literal notranslate"><span class="pre">PyPDF2</span></code>.</p>
+<p>This library is not part of the Anaconda distribution of Python, so it needs to be installed before you can use it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>PyPDF2
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">PyPDF2</span></code>, you can create a <code class="docutils literal notranslate"><span class="pre">pdfReader</span></code> object, containing a method named <code class="docutils literal notranslate"><span class="pre">extractText()</span></code> which can convert pages in PDF files into plain text files.</p>
+<p>Succes cannot be guaranteed, however. If a page in the PDF contains multiple columns, some of the lines may get mixed up. If the file uses a character encoding system other than UTF-8, there can also be some isues with the text of the file. The text that is created by the script will probably need to be edited manually, unfortunately.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">PyPDF2</span>  
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pdf_url</span> <span class="o">=</span> <span class="s1">&#39;https://monoskop.org/images/d/db/Ong_Walter_J_Orality_and_Literacy_2nd_ed.pdf&#39;</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;downloaded.pdf&#39;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdf_url</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">file</span> <span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;Reading </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
+    
+<span class="n">pdf_obj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">file</span> <span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span>  <span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>  
+
+<span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span> <span class="n">filename</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span> <span class="p">)</span>
+<span class="n">pdfReader</span> <span class="o">=</span> <span class="n">PyPDF2</span><span class="o">.</span><span class="n">PdfFileReader</span><span class="p">(</span><span class="n">pdf_obj</span><span class="p">)</span>  
+
+<span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;The PDF file has </span><span class="si">{</span><span class="n">pdfReader</span><span class="o">.</span><span class="n">numPages</span><span class="si">}</span><span class="s1"> pages.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>  
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pdfReader</span><span class="o">.</span><span class="n">numPages</span><span class="p">):</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">pdfReader</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  
+
+    <span class="n">txt</span> <span class="o">=</span> <span class="n">page_obj</span><span class="o">.</span><span class="n">extractText</span><span class="p">()</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>  
+
+
+<span class="n">pdf_obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading downloaded.pdf ...
+The PDF file has 214 pages.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="exercise-1-1">
+<h3>Exercise 1.1<a class="headerlink" href="#exercise-1-1" title="Link to this heading">#</a></h3>
+<p>Download all the text files that are listed in the following dictionary.</p>
+<p><code class="docutils literal notranslate">&#160;&#160;&#160; <span class="pre">gutenberg_files</span> <span class="pre">=</span> <span class="pre">{</span>&#160;&#160;&#160;&#160; <span class="pre">'https://www.gutenberg.org/files/98/98-0.txt'</span> <span class="pre">:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'A</span> <span class="pre">Tale</span> <span class="pre">of</span> <span class="pre">Two</span> <span class="pre">Cities',</span>&#160;&#160;&#160;&#160; <span class="pre">'https://www.gutenberg.org/files/580/580-0.txt':</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'The</span> <span class="pre">Pickwick</span> <span class="pre">Papers'</span>&#160;&#160;&#160; <span class="pre">}</span></code></p>
+<p>Save these files in a folder named ‘Texts’. In Python, you can make new folders using the <code class="docutils literal notranslate"><span class="pre">os</span></code> package, as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">os.mkdir('Texts')</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">text_mining</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">out_folder</span> <span class="o">=</span> <span class="s1">&#39;Texts&#39;</span>
+
+<span class="n">gutenberg_files</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;https://www.gutenberg.org/files/98/98-0.txt&#39;</span> <span class="p">:</span>
+        <span class="s1">&#39;A Tale of Two Cities&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;https://www.gutenberg.org/files/580/580-0.txt&#39;</span><span class="p">:</span>
+        <span class="s1">&#39;The Pickwick Papers&#39;</span>
+   <span class="p">}</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_folder</span><span class="p">):</span> 
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">out_folder</span><span class="p">)</span>
+    
+  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading A Tale of Two Cities ...
+Downloading The Pickwick Papers ...
+
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Welcome.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2%20Tokenisation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. Tokenisation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquiring-the-texts-for-your-corpus">Acquiring the texts for your corpus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-a-text-from-project-gutenberg">Downloading a text from Project Gutenberg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-text-from-pdf-files">Extract text from PDF files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-1">Exercise 1.1</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Peter Verhaar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

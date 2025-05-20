@@ -1,0 +1,914 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4. Examining the context of words &#8212; Text Mining Tutorial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Solutions/4 Examining_context';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5 Part of Speech Tagging and Lemmatisation" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html" />
+    <link rel="prev" title="3. Word frequencies" href="3%20Word%20frequencies.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../Welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Text Mining Tutorial - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Text Mining Tutorial - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../Welcome.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4%20Examining_context.html">4. Examining the context of words</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Solutions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1%20Acquiring%20texts.html">1. Acquiring texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2%20Tokenisation.html">2. Tokenisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3%20Word%20frequencies.html">3. Word frequencies</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Examining the context of words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html">5 Part of Speech Tagging and Lemmatisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6%20Sentiment_analysis.html">6. Sentiment analysis</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cdsleiden/textmining-tutorial/tree/main/issues/new?title=Issue%20on%20page%20%2FSolutions/4 Examining_context.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Solutions/4 Examining_context.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>4. Examining the context of words</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-1">Exercise 4.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-2">Exercise 4.2.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-3">Exercise 4.3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-4">Exercise 4.4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-5">Exercise 4.5</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="examining-the-context-of-words">
+<h1>4. Examining the context of words<a class="headerlink" href="#examining-the-context-of-words" title="Link to this heading">#</a></h1>
+<section id="exercise-4-1">
+<h2>Exercise 4.1<a class="headerlink" href="#exercise-4-1" title="Link to this heading">#</a></h2>
+<p>Create a concordance for the word ‘freedom’ in the novel <em>1984</em>. You can find the full text in the ‘Corpus’ folder. Each fragment shoudl have a length of 50 characters. Show the context of the first 20 occurrences only.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span><span class="p">,</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">nltk.text</span> <span class="kn">import</span> <span class="n">Text</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;1984.txt&#39;</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="n">path</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">full_text</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
+<span class="n">novel</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+<span class="n">novel</span><span class="o">.</span><span class="n">concordance</span><span class="p">(</span><span class="s1">&#39;freedom&#39;</span> <span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">50</span> <span class="p">,</span> <span class="n">lines</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Displaying 20 of 24 matches:
+Party : WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE
+ , he was advocating freedom of speech , freedom 
+ freedom of speech , freedom of the Press , freed
+eedom of the Press , freedom of assembly , freedo
+reedom of assembly , freedom of thought , he was 
+itals : WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE
+o him : WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE
+ave a slogan like `` freedom is slavery &#39;&#39; when t
+ when the concept of freedom has been abolished ?
+t axiom , he wrote : Freedom is the freedom to sa
+ote : Freedom is the freedom to say that two plus
+l that you have more freedom now than you had in 
+t him : WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE
+use of such terms as freedom , justice , and frat
+ the rights of man , freedom of speech , equality
+detected . He has no freedom of choice in any dir
+g in your diary , `` Freedom is the freedom to sa
+ , `` Freedom is the freedom to say that two plus
+ mankind lay between freedom and happiness , and 
+he Party slogan : `` Freedom is Slavery &#39;&#39; . Has 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-2">
+<h2>Exercise 4.2.<a class="headerlink" href="#exercise-4-2" title="Link to this heading">#</a></h2>
+<p>Create a concordance for the word ‘brother’ in the novel <strong>1984</strong>. This time, work with fragments of 20 words long. Display the first 15 occurrences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">text_mining</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;1984.txt&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="n">path</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">full_text</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    
+<span class="n">fragments</span> <span class="o">=</span> <span class="n">concordance_word</span><span class="p">(</span><span class="n">full_text</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;brother&#39;</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">[:</span><span class="mi">15</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It was one of those pictures which are so contrived that the eyes follow you about when you move BIG BROTHER IS WATCHING YOU the caption beneath it ran Inside the flat a fruity voice was reading out a list of 
+that were plastered everywhere The face gazed down from every commanding corner There was one on the immediately opposite BIG BROTHER IS WATCHING YOU the caption said while the dark eyes looked deep into Winston own Down at street level another 
+ago nobody quite remembered had been one of the leading figures of the Party almost on a level with Big Brother himself and then had engaged in activities had been condemned to death and had mysteriously escaped and disappeared The programmes 
+with an alarmed feeling that other people less than oneself might be taken in by it He was abusing Big Brother he was denouncing the dictatorship of the Party he was demanding the immediate conclusion of peace with Eurasia he was 
+the commander of a vast shadowy army an underground network of conspirators dedicated to the overthrow of the State The Brotherhood its name was supposed to be There were also whispered stories of a terrible book a compendium of all the 
+it if at all simply as THE BOOK But one knew of such things only through vague rumours Neither the Brotherhood nor THE BOOK was a subject that any ordinary Party member would mention if there was a way of avoiding 
+blowlamp Thus at one moment Winston hatred was not turned against Goldstein at all but on the contrary against Big Brother the Party and the Thought Police and at such moments his heart went out to the lonely derided heretic on 
+all that was said of Goldstein seemed to him to be true At those moments his secret loathing of Big Brother changed into adoration and Big Brother seemed to tower up an invincible fearless protector standing like a rock against the 
+seemed to him to be true At those moments his secret loathing of Big Brother changed into adoration and Big Brother seemed to tower up an invincible fearless protector standing like a rock against the hordes of Asia and Goldstein in 
+the same moment drawing a deep sigh of relief from everybody the hostile figure melted into the face of Big Brother full of power and mysterious calm and so vast that it almost filled up the screen Nobody heard what Big 
+full of power and mysterious calm and so vast that it almost filled up the screen Nobody heard what Big Brother was saying It was merely a few words of encouragement the sort of words that are uttered in the din 
+din of battle not distinguishable individually but restoring confidence by the fact of being spoken Then the face of Big Brother faded away again and instead the three slogans of the Party stood out in bold capitals WAR IS PEACE FREEDOM 
+Party stood out in bold capitals WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE IS STRENGTH But the face of Big Brother seemed to persist for several seconds on the screen as though the impact that it had made on everyone eyeballs 
+heard in moments of overwhelming emotion Partly it was a sort of hymn to the wisdom and majesty of Big Brother but still more it was an act of a deliberate drowning of consciousness by means of rhythmic noise Winston entrails 
+himself were the enemies of the Party Perhaps the rumours of vast underground conspiracies were true after all perhaps the Brotherhood really existed It was impossible in spite of the endless arrests and confessions and executions to be sure that the 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-3">
+<h2>Exercise 4.3<a class="headerlink" href="#exercise-4-3" title="Link to this heading">#</a></h2>
+<p>From the novel <em>Pride and Prejudice</em>, select all the bigrams containing as the second word ‘man’. Additionally, select all the bigrams in which the second word is woman. In other words, which tokens occur before these two words in the novel? In all cases, only show the bigrams that occur more than once.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">nltk.collocations</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">text_mining</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;PrideAndPrejudice.txt&#39;</span><span class="p">)</span>
+<span class="n">full_text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">full_text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">remove_punctuation</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bigrams containing &quot;man&quot;:&#39;</span><span class="p">)</span>
+
+<span class="n">bigrams</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">bigrams</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">bigram</span><span class="p">,</span><span class="n">count</span> <span class="ow">in</span> <span class="n">bigrams</span><span class="o">.</span><span class="n">most_common</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">bigram</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;man&#39;</span> <span class="ow">and</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bigram</span><span class="si">}</span><span class="s1"> =&gt; </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Bigrams containing &quot;woman&quot;:&#39;</span><span class="p">)</span>
+
+<span class="n">bigrams</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">bigrams</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">bigram</span><span class="p">,</span><span class="n">count</span> <span class="ow">in</span> <span class="n">bigrams</span><span class="o">.</span><span class="n">most_common</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">bigram</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;woman&#39;</span> <span class="ow">and</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bigram</span><span class="si">}</span><span class="s1"> =&gt; </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bigrams containing &quot;man&quot;:
+(&#39;a&#39;, &#39;man&#39;) =&gt; 37
+(&#39;young&#39;, &#39;man&#39;) =&gt; 37
+(&#39;the&#39;, &#39;man&#39;) =&gt; 16
+(&#39;sensible&#39;, &#39;man&#39;) =&gt; 4
+(&#39;disagreeable&#39;, &#39;man&#39;) =&gt; 3
+(&#39;agreeable&#39;, &#39;man&#39;) =&gt; 3
+(&#39;any&#39;, &#39;man&#39;) =&gt; 3
+(&#39;charming&#39;, &#39;man&#39;) =&gt; 3
+(&#39;no&#39;, &#39;man&#39;) =&gt; 3
+(&#39;of&#39;, &#39;man&#39;) =&gt; 3
+(&#39;other&#39;, &#39;man&#39;) =&gt; 3
+(&#39;single&#39;, &#39;man&#39;) =&gt; 2
+(&#39;horrid&#39;, &#39;man&#39;) =&gt; 2
+(&#39;this&#39;, &#39;man&#39;) =&gt; 2
+(&#39;another&#39;, &#39;man&#39;) =&gt; 2
+(&#39;respectable&#39;, &#39;man&#39;) =&gt; 2
+(&#39;amiable&#39;, &#39;man&#39;) =&gt; 2
+
+Bigrams containing &quot;woman&quot;:
+(&#39;a&#39;, &#39;woman&#39;) =&gt; 21
+(&#39;young&#39;, &#39;woman&#39;) =&gt; 10
+(&#39;any&#39;, &#39;woman&#39;) =&gt; 4
+(&#39;other&#39;, &#39;woman&#39;) =&gt; 3
+(&#39;of&#39;, &#39;woman&#39;) =&gt; 2
+(&#39;elegant&#39;, &#39;woman&#39;) =&gt; 2
+(&#39;happy&#39;, &#39;woman&#39;) =&gt; 2
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-4">
+<h2>Exercise 4.4<a class="headerlink" href="#exercise-4-4" title="Link to this heading">#</a></h2>
+<p>In <em>Pride and Prejudice</em>, which words are used most frequently in the vicinity of the word ‘Darcy’? Consider fragments of 7 words long.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;PrideAndPrejudice.txt&#39;</span><span class="p">)</span>
+<span class="n">full_text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">nearby_words</span> <span class="o">=</span> <span class="n">collocation</span><span class="p">(</span> <span class="n">full_text</span> <span class="p">,</span> <span class="s1">&#39;darcy&#39;</span> <span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">nearby_words_counted</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="n">nearby_words_counted</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">nearby_words</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="n">stopwords</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span><span class="n">count</span> <span class="ow">in</span> <span class="n">nearby_words_counted</span><span class="o">.</span><span class="n">most_common</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span> <span class="ow">and</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s1"> =&gt; </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>miss =&gt; 53
+said =&gt; 30
+could =&gt; 20
+bingley =&gt; 19
+would =&gt; 18
+elizabeth =&gt; 17
+much =&gt; 17
+never =&gt; 13
+might =&gt; 12
+well =&gt; 11
+though =&gt; 11
+soon =&gt; 10
+saw =&gt; 9
+think =&gt; 9
+wickham =&gt; 9
+see =&gt; 9
+looked =&gt; 8
+must =&gt; 8
+great =&gt; 8
+seen =&gt; 8
+replied =&gt; 8
+sister =&gt; 8
+brother =&gt; 8
+heard =&gt; 8
+room =&gt; 7
+nothing =&gt; 7
+less =&gt; 7
+every =&gt; 7
+however =&gt; 7
+letter =&gt; 7
+made =&gt; 7
+late =&gt; 7
+without =&gt; 7
+ever =&gt; 7
+time =&gt; 6
+looking =&gt; 6
+bennet =&gt; 6
+cried =&gt; 6
+pemberley =&gt; 6
+towards =&gt; 6
+may =&gt; 6
+thing =&gt; 6
+lady =&gt; 6
+really =&gt; 6
+last =&gt; 6
+friend =&gt; 5
+attention =&gt; 5
+appeared =&gt; 5
+surprised =&gt; 5
+little =&gt; 5
+half =&gt; 5
+seemed =&gt; 5
+love =&gt; 5
+two =&gt; 5
+eyes =&gt; 5
+afterwards =&gt; 5
+immediately =&gt; 5
+perfectly =&gt; 5
+told =&gt; 5
+father =&gt; 5
+known =&gt; 5
+near =&gt; 4
+walked =&gt; 4
+speaking =&gt; 4
+scarcely =&gt; 4
+answer =&gt; 4
+speak =&gt; 4
+know =&gt; 4
+object =&gt; 4
+thought =&gt; 4
+better =&gt; 4
+took =&gt; 4
+often =&gt; 4
+walk =&gt; 4
+turned =&gt; 4
+civility =&gt; 4
+bow =&gt; 4
+ill =&gt; 4
+catherine =&gt; 4
+mentioned =&gt; 4
+looks =&gt; 4
+behaviour =&gt; 4
+found =&gt; 4
+received =&gt; 4
+georgiana =&gt; 4
+acquainted =&gt; 4
+fitzwilliam =&gt; 4
+coming =&gt; 4
+surprise =&gt; 4
+give =&gt; 4
+daughter =&gt; 4
+gentleman =&gt; 3
+drew =&gt; 3
+hurst =&gt; 3
+liked =&gt; 3
+first =&gt; 3
+mean =&gt; 3
+consider =&gt; 3
+allow =&gt; 3
+country =&gt; 3
+general =&gt; 3
+directed =&gt; 3
+smile =&gt; 3
+smiled =&gt; 3
+receive =&gt; 3
+appearance =&gt; 3
+left =&gt; 3
+felt =&gt; 3
+say =&gt; 3
+wish =&gt; 3
+engaged =&gt; 3
+go =&gt; 3
+convinced =&gt; 3
+opened =&gt; 3
+moments =&gt; 3
+recollection =&gt; 3
+asked =&gt; 3
+manner =&gt; 3
+long =&gt; 3
+one =&gt; 3
+men =&gt; 3
+next =&gt; 3
+son =&gt; 3
+wonder =&gt; 3
+sisters =&gt; 3
+believe =&gt; 3
+seeing =&gt; 3
+pleasure =&gt; 3
+length =&gt; 3
+spoke =&gt; 3
+infamous =&gt; 3
+least =&gt; 3
+whose =&gt; 3
+chief =&gt; 3
+sat =&gt; 3
+glance =&gt; 3
+marry =&gt; 3
+perhaps =&gt; 3
+colonel =&gt; 3
+supposed =&gt; 3
+yes =&gt; 3
+misery =&gt; 3
+marriage =&gt; 3
+wholly =&gt; 3
+called =&gt; 3
+morning =&gt; 3
+sorry =&gt; 3
+feelings =&gt; 3
+make =&gt; 3
+done =&gt; 3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-5">
+<h2>Exercise 4.5<a class="headerlink" href="#exercise-4-5" title="Link to this heading">#</a></h2>
+<p>Find all the sentences in <em>1984</em> containing the words ‘war’ and ‘peace’. Make sure that, in these sentences, there are no more than 10 words in between these two terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path_parent</span><span class="p">,</span><span class="s1">&#39;Corpus&#39;</span><span class="p">,</span><span class="s1">&#39;1984.txt&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="n">path</span> <span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">full_text</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        
+<span class="n">sentences</span> <span class="o">=</span> <span class="n">cooccurrence</span><span class="p">(</span> <span class="n">full_text</span> <span class="p">,</span> <span class="s1">&#39;war&#39;</span> <span class="p">,</span> <span class="s1">&#39;peace&#39;</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>From where Winston stood it was just possible to read, picked out on its white face in elegant lettering, the three slogans of the Party: WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE IS STRENGTH The Ministry of Truth contained, it was said, three thousand rooms above ground level, and corresponding ramifications below.
+
+The Ministry of Peace, which concerned itself with war.
+
+He was an object of hatred more constant than either Eurasia or Eastasia, since when Oceania was at war with one of these Powers it was generally at peace with the other.
+
+Then the face of Big Brother faded away again, and instead the three slogans of the Party stood out in bold capitals: WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE IS STRENGTH But the face of Big Brother seemed to persist for several seconds on the screen, as though the impact that it had made on everyone&#39;s eyeballs was too vivid to wear off immediately.
+
+Like an answer, the three slogans on the white face of the Ministry of Truth came back to him: WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE IS STRENGTH He took a twenty-five cent piece out of his pocket.
+
+Like a leaden knell the words came back at him: WAR IS PEACE FREEDOM IS SLAVERY IGNORANCE IS STRENGTH PART TWO Chapter 1 It was the middle of the morning, and Winston had left the cubicle to go to the lavatory.
+
+It was rather more of a shock to him when he discovered from some chance remark that she did not remember that Oceania, four years ago, had been at war with Eastasia and at peace with Eurasia.
+
+He went on reading: Chapter III War is Peace The splitting up of the world into three great super-states was an event which could be and indeed was foreseen before the middle of the twentieth century.
+
+This--although the vast majority of Party members understand it only in a shallower sense--is the inner meaning of the Party slogan: WAR IS PEACE.
+
+The Ministry of Peace concerns itself with war, the Ministry of Truth with lies, the Ministry of Love with torture and the Ministry of Plenty with starvation.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Solutions"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="3%20Word%20frequencies.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3. Word frequencies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5%20Part%20of%20Speech%20Tagging%20and%20Lemmatisation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5 Part of Speech Tagging and Lemmatisation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-1">Exercise 4.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-2">Exercise 4.2.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-3">Exercise 4.3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-4">Exercise 4.4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-5">Exercise 4.5</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Peter Verhaar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
